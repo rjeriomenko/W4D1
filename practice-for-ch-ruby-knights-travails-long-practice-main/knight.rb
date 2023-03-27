@@ -1,7 +1,7 @@
 require_relative "tree_node"
 
 class KnightPathFinder
-    attr_reader :pos
+    # attr_reader :pos
     def initialize(pos)
         @pos = pos
         @considered_positions = Set.new # necessary?
@@ -11,9 +11,9 @@ class KnightPathFinder
         build_move_tree # subject to change
     end
 
-    def build_move_tree
+    def build_move_tree # the root node of the tree should be the knight's starting position
 
-        starting_moves = self.new_move_position(@root_node.pos) 
+        starting_moves = self.new_move_position(@root_node.value) 
         queue = [] 
 
         starting_moves.each do |pos|
@@ -23,19 +23,14 @@ class KnightPathFinder
         end
         
         until queue.empty? 
-            first_node = queue.shift 
-            first_node_moves = self.new_move_position(first_node.value)
-            first_node_moves.each do |move|
-                first_node.add_child(PolyTreeNode.new(move))
-
+            next_node = queue.shift 
+            next_node_moves = self.new_move_position(next_node.value)
+            next_node_moves.each do |move|
+                child_node = PolyTreeNode.new(move)
+                next_node.add_child(child_node)
+                queue.push(child_node)
             end
-
-            PolyTreeNode.add_child(first_pos)
-
         end 
-
-
-        # the root node of the tree should be the knight's starting position
     end
 
     def self.valid_moves(pos) #assuming the pos is positive
@@ -76,7 +71,7 @@ class KnightPathFinder
             !@considered_positions.include?(pair)
         end
 
-        @considered_positions.merge(*unconsidered_positions)
+        @considered_positions.merge(unconsidered_positions)
         unconsidered_positions
     end   
 
@@ -89,4 +84,4 @@ p KnightPathFinder.valid_moves([3,2])
 
 p k = KnightPathFinder.new([3,2])
 
-p k.new_move_position(k.pos)
+# p k.new_move_position(k.pos)
