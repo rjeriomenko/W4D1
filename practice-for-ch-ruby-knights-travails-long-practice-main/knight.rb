@@ -4,14 +4,14 @@ class KnightPathFinder
     attr_reader :pos
     def initialize(pos)
         @pos = pos
-        @considered_positions = Set.new
+        @considered_positions = Set.new # necessary?
         @considered_positions.add([5,1])
         @considered_positions.add(@pos)
-        @root_node = PolyTreeNode.new(@pos)
+        @root_node = PolyTreeNode.new(@pos)  # Start by creating an instance variable, `self.root_node` that stores the knight's initial position in an instance of your `PolyTreeNode` class.
         # build_move_tree(root_node)# subject to change
     end
 
-    def build_move_tree(node) # change
+    def build_move_tree(node) # the root node of the tree should be the knight's starting position
     end
 
     def self.valid_moves(pos) #assuming the pos is positive
@@ -52,8 +52,8 @@ class KnightPathFinder
             !@considered_positions.include?(pair)
         end
 
-        unconsidered_positions #this works
-
+        @considered_positions.merge(*unconsidered_positions)
+        unconsidered_positions
     end
 
 
